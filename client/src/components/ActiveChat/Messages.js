@@ -2,10 +2,13 @@ import React from "react";
 import { Box } from "@material-ui/core";
 import { SenderBubble, OtherUserBubble } from "../ActiveChat";
 import moment from "moment";
+import { connect } from "react-redux";
 
 const Messages = (props) => {
   const { messages, otherUser, userId } = props;
-
+  messages.sort(function(a,b){
+    return new Date(a.createdAt) - new Date(b.createdAt)
+  })
   return (
     <Box>
       {messages.map((message) => {
@@ -21,4 +24,8 @@ const Messages = (props) => {
   );
 };
 
-export default Messages;
+const mapStateToProps = (state) => {
+  return JSON.parse(JSON.stringify(state))
+};
+
+export default connect(mapStateToProps, null)(Messages);
