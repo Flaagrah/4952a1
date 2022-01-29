@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { setActiveChat } from "../../store/activeConversation";
 import { patchNumRead } from "../../store/utils/thunkCreators";
 import { connect } from "react-redux";
+import { readUpdateMessage } from "../ActiveChat/utils/Utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,17 +23,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Chat = (props) => {
   const classes = useStyles();
-  const { patchNumRead, conversation, user } = props;
+  const { conversation, user } = props;
   const { otherUser } = conversation;
 
   const handleClick = async (conversation) => {
     await props.setActiveChat(conversation.otherUser.username);
     console.log(conversation)
-    const readUpdate = {
-      conversationId: conversation.id,
-      numRead: conversation.messages.length,
-      senderId: user.id
-    }
+    const readUpdate = readUpdateMessage(props)
     await props.patchNumRead(readUpdate)
   }
 

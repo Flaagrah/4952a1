@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { FormControl, FilledInput } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { postMessage } from "../../store/utils/thunkCreators";
+import { postMessage, patchNumRead } from "../../store/utils/thunkCreators";
+import { readUpdateMessage } from "./utils/Utils";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -20,7 +21,8 @@ const useStyles = makeStyles(() => ({
 const Input = (props) => {
   const classes = useStyles();
   const [text, setText] = useState("");
-  const { postMessage, otherUser, conversationId, user } = props;
+  const { postMessage, otherUser, conversation, user } = props;
+  const conversationId = conversation.id
 
   const handleChange = (event) => {
     setText(event.target.value);
@@ -36,8 +38,17 @@ const Input = (props) => {
       conversationId,
       sender: conversationId ? null : user
     };
-    await postMessage(reqBody);
+    const numMessages = conversation.messages.length + 1
+    try {
+      await postMessage(reqBody);
+    } catch (error) {
+      console.error("Error Sending Message")
+      return
+    }
     setText("");
+    const readUpdate = readUpdateMessage(props, numMessages)
+    console.log(readUpdate)
+    await props.patchNumRead(readUpdate)
   };
 
   return (
@@ -61,6 +72,9 @@ const mapDispatchToProps = (dispatch) => {
     postMessage: (message) => {
       dispatch(postMessage(message));
     },
+    patchNumRead: (numRead, senderId) => {
+      dispatch(patchNumRead(numRead, senderId))
+    }
   };
 };
 

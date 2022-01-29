@@ -96,6 +96,7 @@ const sendReadUpdate = (data, body) => {
 
 const saveMessage = async (body) => {
   const { data } = await axios.post("/api/messages", body);
+  console.log(data)
   return data;
 };
 
@@ -134,6 +135,8 @@ export const postMessage = (body) => async (dispatch) => {
     }
 
     sendMessage(data, body);
+    console.log(data)
+    return data
   } catch (error) {
     console.error(error);
   }
