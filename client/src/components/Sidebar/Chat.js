@@ -6,6 +6,8 @@ import { setActiveChat } from "../../store/activeConversation";
 import { patchNumRead } from "../../store/utils/thunkCreators";
 import { connect } from "react-redux";
 import { readUpdateMessage } from "../ActiveChat/utils/Utils";
+import { gotConversations } from "../../store/conversations";
+import { withThemeCreator } from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,13 +20,24 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       cursor: "grab"
     }
-  }
+  },
+  unread: {
+    color: "white",
+    backgroundColor: "blue",
+    borderRadius: "1em",
+    padding: "0.2em 0.65em",
+    fontSize: "0.8em",
+    fontWeight: "bold"
+  } 
 }));
 
 const Chat = (props) => {
   const classes = useStyles();
   const { conversation, user } = props;
   const { otherUser } = conversation;
+  const numMessages = conversation.messages ? conversation.messages.length : 0
+  const numRead = conversation.thisUserNumRead
+  let unRead = numMessages - numRead
 
   const handleClick = async (conversation) => {
     await props.setActiveChat(conversation.otherUser.username);
@@ -42,6 +55,12 @@ const Chat = (props) => {
         sidebar={true}
       />
       <ChatContent conversation={conversation} />
+      {
+        unRead > 0 ?
+        <div className={classes.unread}>
+          {unRead ? unRead : ''}
+        </div> : ''
+      }
     </Box>
   );
 };
