@@ -57,8 +57,8 @@ const mapDispatchToProps = (dispatch) => {
     setActiveChat: (id) => {
       dispatch(setActiveChat(id));
     },
-    patchNumRead: (numRead, senderId) => {
-      dispatch(patchNumRead(numRead, senderId))
+    patchNumRead: (readUpdate) => {
+      dispatch(patchNumRead(readUpdate))
     }
   };
 };

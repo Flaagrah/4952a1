@@ -72,8 +72,8 @@ const mapDispatchToProps = (dispatch) => {
     postMessage: (message) => {
       dispatch(postMessage(message));
     },
-    patchNumRead: (numRead, senderId) => {
-      dispatch(patchNumRead(numRead, senderId))
+    patchNumRead: (readUpdate) => {
+      dispatch(patchNumRead(readUpdate))
     }
   };
 };
