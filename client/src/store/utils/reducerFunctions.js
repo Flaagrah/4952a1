@@ -37,15 +37,13 @@ export const updateReadValue = (state, payload) => {
       return convo
     }
     console.log(senderId)
-    let key = undefined
-    if (convo.user1Id === senderId) {
+    if (convo.otherUser.id === senderId) {
       console.log("1", numRead)
-      return {...convo, user1NumRead: numRead}
-    } else if (convo.user2Id === senderId) {
+      return {...convo, otherUserNumRead: numRead}
+    } else {
       console.log("2", numRead)
-      return {...convo, user2NumRead: numRead}
+      return {...convo, thisUserNumRead: numRead}
     }
-    return convo 
   })
 } 
 

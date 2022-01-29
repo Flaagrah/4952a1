@@ -54,11 +54,17 @@ router.get("/", async (req, res, next) => {
       // set a property "otherUser" so that frontend will have easier access
       if (convoJSON.user1) {
         convoJSON.otherUser = convoJSON.user1;
+        convoJSON.otherUserNumRead = convoJSON.user1NumRead
+        convoJSON.thisUserNumRead = convoJSON.user2NumRead
         delete convoJSON.user1;
       } else if (convoJSON.user2) {
         convoJSON.otherUser = convoJSON.user2;
+        convoJSON.otherUserNumRead = convoJSON.user2NumRead
+        convoJSON.thisUserNumRead = convoJSON.user1NumRead
         delete convoJSON.user2;
       }
+      delete convoJSON.user1NumRead
+      delete convoJSON.user2NumRead
 
       // set property for online status of the other user
       if (onlineUsers.includes(convoJSON.otherUser.id)) {
