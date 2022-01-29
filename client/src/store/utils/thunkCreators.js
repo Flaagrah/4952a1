@@ -5,6 +5,7 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
+  setReadUpdate
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -72,10 +73,25 @@ export const logout = (id) => async (dispatch) => {
 export const fetchConversations = () => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/conversations");
+    console.log(data)
     dispatch(gotConversations(data));
   } catch (error) {
     console.error(error);
   }
+};
+
+const readUpdate = async (body) => {
+  const { data } = await axios.patch("/api/messages/readupdate", body);
+  return data;
+};
+
+const sendReadUpdate = (data, body) => {
+  console.log(data.numRead, body.senderId, body.conversationId)
+  socket.emit("read-last", {
+    numRead: data.numRead,
+    senderId: body.senderId,
+    conversationId: body.conversationId
+  });
 };
 
 const saveMessage = async (body) => {
@@ -89,6 +105,20 @@ const sendMessage = (data, body) => {
     recipientId: body.recipientId,
     sender: data.sender,
   });
+};
+
+export const patchNumRead = (body) => async (dispatch) => {
+  try {
+    const data = await readUpdate(body);
+
+    if (body.conversationId) {
+      dispatch(setReadUpdate(data.numRead, body.senderId, body.conversationId));
+    }
+
+    sendReadUpdate(data, body);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 // message format to send: {recipientId, text, conversationId}

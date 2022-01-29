@@ -40,6 +40,14 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("add-online-user", id);
   });
 
+  socket.on("read-last", (data)=>{
+    socket.broadcast.emit("read-last", {
+      numRead: data.numRead,
+      senderId: data.senderId,
+      conversationId: data.conversationId
+    })
+  })
+
   socket.on("new-message", (data) => {
     socket.broadcast.emit("new-message", {
       message: data.message,

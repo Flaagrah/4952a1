@@ -28,6 +28,27 @@ export const addMessageToStore = (state, payload) => {
   });
 };
 
+export const updateReadValue = (state, payload) => {
+  console.log(payload)
+  const { numRead, senderId, conversationId } = payload
+  return state.map((convo)=>{
+    console.log(conversationId, convo)
+    if (conversationId != convo.id) {
+      return convo
+    }
+    console.log(senderId)
+    let key = undefined
+    if (convo.user1Id === senderId) {
+      console.log("1", numRead)
+      return {...convo, user1NumRead: numRead}
+    } else if (convo.user2Id === senderId) {
+      console.log("2", numRead)
+      return {...convo, user2NumRead: numRead}
+    }
+    return convo 
+  })
+} 
+
 export const addOnlineUserToStore = (state, id) => {
   return state.map((convo) => {
     if (convo.otherUser.id === id) {

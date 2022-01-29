@@ -2,6 +2,38 @@ const router = require("express").Router();
 const { Conversation, Message } = require("../../db/models");
 const onlineUsers = require("../../onlineUsers");
 
+router.patch("/readupdate", async (req, res, next)=>{
+  try {
+    const senderId = req.user.id
+    const { conversationId, numRead } = req.body
+    // const conversation = await Conversation.findConversation({
+    //   id: conversationId
+    // })
+    const conversationObj = await Conversation.findOne({ where: {id: conversationId} })
+    if (conversationObj) {
+      console.log(conversationObj.dataValues)
+      const conversation = conversationObj.dataValues
+      let key = undefined
+      if (senderId==conversation.user1Id) {
+        key = "user1NumRead"
+      } else if (senderId==conversation.user2Id) {
+        key = "user2NumRead"
+      }
+      if (key) {
+        const keyValue = {}
+        keyValue[key] = numRead
+        await conversationObj.update(keyValue)
+        await conversationObj.save()
+      }
+      res.json({ numRead })
+    } else {
+      throw exception
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
 // expects {recipientId, text, conversationId } in body (conversationId will be null if no conversation exists yet)
 router.post("/", async (req, res, next) => {
   try {
@@ -26,7 +58,7 @@ router.post("/", async (req, res, next) => {
       // create conversation
       conversation = await Conversation.create({
         user1Id: senderId,
-        user2Id: recipientId,
+        user2Id: recipientId
       });
       if (onlineUsers.includes(sender.id)) {
         sender.online = true;
