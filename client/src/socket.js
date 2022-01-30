@@ -1,5 +1,4 @@
 import io from "socket.io-client";
-import { readUpdateMessage } from "./components/ActiveChat/utils/Utils";
 import store from "./store";
 import {
   setNewMessage,
@@ -7,7 +6,8 @@ import {
   addOnlineUser,
   setReadUpdate
 } from "./store/conversations";
-import { patchNumRead } from "./store/utils/thunkCreators";
+import { sendReadLastMessage } from "./store/utils/thunkCreators";
+import { readUpdateMessage } from "./components/ActiveChat/utils/Utils";
 
 const socket = io(window.location.origin);
 
@@ -24,18 +24,7 @@ socket.on("connect", () => {
   socket.on("new-message", (data) => {
     let state = store.getState()
     store.dispatch(setNewMessage(data.message, data.sender, state.activeConversation));
-    state = store.getState()
-    const convoId = data.message.conversationId
-    state.conversations.forEach((convo)=>{
-      if (convo.id != convoId) {
-        return
-      }
-      //THIS SHOULD BE COMPARING ID INSTEAD OF USERNAME BUT I'M FOLLOWING WHAT'S DONE IN THE CODE BASE
-      if (convo.otherUser.username == state.activeConversation) {
-        const readUpdate = readUpdateMessage({conversation: convo, user: state.user})
-        store.dispatch(patchNumRead(readUpdate))
-      }
-    })
+    sendReadLastMessage(store.getState(), data, readUpdateMessage)(store.dispatch)
   });
   socket.on("read-last", (data) => {
     store.dispatch(setReadUpdate(data.numRead, data.senderId, data.conversationId));

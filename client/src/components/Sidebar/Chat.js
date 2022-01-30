@@ -6,8 +6,6 @@ import { setActiveChat } from "../../store/activeConversation";
 import { patchNumRead } from "../../store/utils/thunkCreators";
 import { connect } from "react-redux";
 import { readUpdateMessage } from "../ActiveChat/utils/Utils";
-import { gotConversations } from "../../store/conversations";
-import { withThemeCreator } from "@material-ui/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,17 +21,18 @@ const useStyles = makeStyles((theme) => ({
   },
   unread: {
     color: "white",
-    backgroundColor: "blue",
+    backgroundColor: "#3A8DFF",
     borderRadius: "1em",
     padding: "0.2em 0.65em",
     fontSize: "0.8em",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    marginRight: "3em"
   } 
 }));
 
 const Chat = (props) => {
   const classes = useStyles();
-  const { conversation, user } = props;
+  const { conversation } = props;
   const { otherUser } = conversation;
   const numMessages = conversation.messages ? conversation.messages.length : 0
   const numRead = conversation.thisUserNumRead

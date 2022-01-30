@@ -6,8 +6,8 @@ import moment from "moment";
 
 const useStyles = makeStyles(() => ({
   avatar: {
-    height: 30,
-    width: 30,
+    height: 20,
+    width: 20,
     marginRight: 11,
     marginTop: 6
   },

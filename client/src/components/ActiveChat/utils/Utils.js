@@ -1,10 +1,8 @@
 export const readUpdateMessage = (props, numMessages = -1) =>{
-    console.log(props)
     const { conversation, user } = props;
-    console.log(conversation, user)
     return {
-        conversationId: conversation.id,
+        conversationId: conversation ? conversation.id : undefined,
         numRead: numMessages >= 0 ? numMessages : conversation.messages.length,
-        senderId: user.id
+        senderId: user ? user.id : undefined
     }
 }

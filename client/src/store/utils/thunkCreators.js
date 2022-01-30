@@ -86,7 +86,6 @@ const readUpdate = async (body) => {
 };
 
 const sendReadUpdate = (data, body) => {
-  console.log(data.numRead, body.senderId, body.conversationId)
   socket.emit("read-last", {
     numRead: data.numRead,
     senderId: body.senderId,
@@ -141,6 +140,20 @@ export const postMessage = (body) => async (dispatch) => {
     console.error(error);
   }
 };
+
+export const sendReadLastMessage = (state, data, readUpdateMessage)=> async (dispatch) => {
+  const convoId = data.message.conversationId
+  state.conversations.forEach((convo)=>{
+    if (convo.id != convoId) {
+      return
+    }
+    //THIS SHOULD BE COMPARING ID INSTEAD OF USERNAME BUT I'M FOLLOWING WHAT'S DONE IN THE CODE BASE
+    if (convo.otherUser.username == state.activeConversation) {
+      const readUpdate = readUpdateMessage({conversation: convo, user: state.user})
+      dispatch(patchNumRead(readUpdate))
+    }
+  })
+}
 
 export const searchUsers = (searchTerm) => async (dispatch) => {
   try {

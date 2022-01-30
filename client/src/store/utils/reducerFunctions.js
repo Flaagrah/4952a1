@@ -33,19 +33,14 @@ export const addMessageToStore = (state, payload) => {
 };
 
 export const updateReadValue = (state, payload) => {
-  console.log(payload)
   const { numRead, senderId, conversationId } = payload
   return state.map((convo)=>{
-    console.log(conversationId, convo)
     if (conversationId != convo.id) {
       return convo
     }
-    console.log(senderId)
     if (convo.otherUser.id === senderId) {
-      console.log("1", numRead)
       return {...convo, otherUserNumRead: numRead}
     } else {
-      console.log("2", numRead)
       return {...convo, thisUserNumRead: numRead}
     }
   })

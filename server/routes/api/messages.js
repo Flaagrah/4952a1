@@ -6,9 +6,6 @@ router.patch("/readupdate", async (req, res, next)=>{
   try {
     const senderId = req.user.id
     const { conversationId, numRead } = req.body
-    // const conversation = await Conversation.findConversation({
-    //   id: conversationId
-    // })
     const conversationObj = await Conversation.findOne({ where: {id: conversationId} })
     if (conversationObj) {
       const conversation = conversationObj.dataValues
