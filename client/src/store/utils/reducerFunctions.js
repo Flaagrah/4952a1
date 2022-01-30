@@ -1,7 +1,6 @@
 const addMessage = (convo, message)=>{
-  const newMessages = [...convo.messages]
+  const newMessages = [...convo.messages, message]
   const newConvo = {...convo, messages: newMessages}
-  newConvo.messages.push(message);
   newConvo.latestMessageText = message.text;
   return newConvo
 }
