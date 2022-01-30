@@ -32,14 +32,12 @@ socket.on("connect", () => {
       }
       //THIS SHOULD BE COMPARING ID INSTEAD OF USERNAME BUT I'M FOLLOWING WHAT'S DONE IN THE CODE BASE
       if (convo.otherUser.username == state.activeConversation) {
-        console.log(convo, state.user)
         const readUpdate = readUpdateMessage({conversation: convo, user: state.user})
         store.dispatch(patchNumRead(readUpdate))
       }
     })
   });
   socket.on("read-last", (data) => {
-    console.log(data)
     store.dispatch(setReadUpdate(data.numRead, data.senderId, data.conversationId));
   });
 });

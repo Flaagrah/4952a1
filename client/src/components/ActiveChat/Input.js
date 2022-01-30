@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
 const Input = (props) => {
   const classes = useStyles();
   const [text, setText] = useState("");
-  const { postMessage, otherUser, conversation, user } = props;
+  const { postMessage, otherUser, conversation, user, activeConversation } = props;
   const conversationId = conversation.id
 
   const handleChange = (event) => {
@@ -31,12 +31,12 @@ const Input = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     // add sender user info if posting to a brand new convo, so that the other user will have access to username, profile pic, etc.
-    console.log(props)
     const reqBody = {
       text: event.target.text.value,
       recipientId: otherUser.id,
       conversationId,
-      sender: conversationId ? null : user
+      sender: conversationId ? null : user,
+      activeConversation
     };
     const numMessages = conversation.messages.length + 1
     try {
@@ -47,7 +47,6 @@ const Input = (props) => {
     }
     setText("");
     const readUpdate = readUpdateMessage(props, numMessages)
-    console.log(readUpdate)
     await props.patchNumRead(readUpdate)
   };
 

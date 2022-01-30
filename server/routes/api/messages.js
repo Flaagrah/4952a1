@@ -11,7 +11,6 @@ router.patch("/readupdate", async (req, res, next)=>{
     // })
     const conversationObj = await Conversation.findOne({ where: {id: conversationId} })
     if (conversationObj) {
-      console.log(conversationObj.dataValues)
       const conversation = conversationObj.dataValues
       let key = undefined
       if (senderId==conversation.user1Id) {

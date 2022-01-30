@@ -41,7 +41,6 @@ const Chat = (props) => {
 
   const handleClick = async (conversation) => {
     await props.setActiveChat(conversation.otherUser.username);
-    console.log(conversation)
     const readUpdate = readUpdateMessage(props)
     await props.patchNumRead(readUpdate)
   }
