@@ -22,8 +22,9 @@ socket.on("connect", () => {
     store.dispatch(removeOfflineUser(id));
   });
   socket.on("new-message", (data) => {
-    store.dispatch(setNewMessage(data.message, data.sender));
-    const state = store.getState()
+    let state = store.getState()
+    store.dispatch(setNewMessage(data.message, data.sender, state.activeConversation));
+    state = store.getState()
     const convoId = data.message.conversationId
     state.conversations.forEach((convo)=>{
       if (convo.id != convoId) {

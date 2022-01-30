@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { makeStyles } from "@material-ui/core/styles";
 import { setActiveChat } from "../../store/activeConversation";
@@ -57,9 +57,9 @@ const Chat = (props) => {
       <ChatContent conversation={conversation} />
       {
         unRead > 0 ?
-        <div className={classes.unread}>
+        <Typography className={classes.unread}>
           {unRead ? unRead : ''}
-        </div> : ''
+        </Typography> : ''
       }
     </Box>
   );
