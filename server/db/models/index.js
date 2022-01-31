@@ -5,6 +5,11 @@ const UserToConvo = require("./userToConvo");
 // associations
 
 Conversation.belongsToMany(User, {through: UserToConvo});
+User.belongsToMany(Conversation, {through: UserToConvo});
+UserToConvo.belongsTo(User)
+UserToConvo.belongsTo(Conversation)
+Conversation.hasMany(UserToConvo)
+User.hasMany(UserToConvo)
 Message.belongsTo(Conversation);
 Conversation.hasMany(Message);
 
