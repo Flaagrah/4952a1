@@ -21,8 +21,18 @@ const Messages = (props) => {
   const { messages, otherUser, userId, otherUserNumRead } = props;
   const classes = useStyles()
 
+  let placedIcon = false;
+  let maxIndex = -1
+  //This is used to place the icon above recent messages posted by the other user
+  for (let i = otherUserNumRead-1;i>=0;i--) {
+    if (messages[i].senderId==userId) {
+      maxIndex = i
+      break
+    }
+  }
   const getIcon = (index)=>{
-    if (index == otherUserNumRead-1) {
+    if (!placedIcon && (index == otherUserNumRead-1 || maxIndex==index)) {
+      placedIcon = true
       return (
       <Box className={classes.iconRoot}>
         <Avatar alt={otherUser.username} src={otherUser.photoUrl} className={classes.avatar}></Avatar>
@@ -33,7 +43,6 @@ const Messages = (props) => {
     }
     
   }
-
   return (
     <Box>
       {messages.map((message, index) => {

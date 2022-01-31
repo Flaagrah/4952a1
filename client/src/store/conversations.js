@@ -27,7 +27,6 @@ export const gotConversations = (conversations) => {
 };
 
 export const setReadUpdate = (numRead, senderId, conversationId) => {
-  console.log(numRead, senderId, conversationId)
   return {
     type: READ_UPDATE,
     payload: { numRead, senderId: senderId || null, conversationId },

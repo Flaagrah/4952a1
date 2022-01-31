@@ -73,7 +73,6 @@ export const logout = (id) => async (dispatch) => {
 export const fetchConversations = () => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/conversations");
-    console.log(data)
     dispatch(gotConversations(data));
   } catch (error) {
     console.error(error);
@@ -95,7 +94,6 @@ const sendReadUpdate = (data, body) => {
 
 const saveMessage = async (body) => {
   const { data } = await axios.post("/api/messages", body);
-  console.log(data)
   return data;
 };
 
@@ -134,7 +132,6 @@ export const postMessage = (body) => async (dispatch) => {
     }
 
     sendMessage(data, body);
-    console.log(data)
     return data
   } catch (error) {
     console.error(error);
