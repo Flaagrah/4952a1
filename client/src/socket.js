@@ -4,7 +4,10 @@ import {
   setNewMessage,
   removeOfflineUser,
   addOnlineUser,
+  setReadUpdate
 } from "./store/conversations";
+import { sendReadLastMessage } from "./store/utils/thunkCreators";
+import { readUpdateMessage } from "./components/ActiveChat/utils/Utils";
 
 const socket = io(window.location.origin);
 
@@ -19,7 +22,12 @@ socket.on("connect", () => {
     store.dispatch(removeOfflineUser(id));
   });
   socket.on("new-message", (data) => {
-    store.dispatch(setNewMessage(data.message, data.sender));
+    let state = store.getState()
+    store.dispatch(setNewMessage(data.message, data.sender, state.activeConversation));
+    sendReadLastMessage(store.getState(), data, readUpdateMessage)(store.dispatch)
+  });
+  socket.on("read-last", (data) => {
+    store.dispatch(setReadUpdate(data.numRead, data.senderId, data.conversationId));
   });
 });
 
